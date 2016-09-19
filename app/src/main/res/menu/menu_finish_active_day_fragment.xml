@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.anrad.moonday.MainActivity">
+
+    <item
+        android:id="@+id/menu_finish_active_day_fragment_undo"
+        android:orderInCategory="001"
+        android:title="@string/menu_finish_active_day_fragment_undo"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_finish_active_day_fragment_separator"
+        android:orderInCategory="002"
+        android:title="---------"
+        app:showAsAction="never" />
+</menu>

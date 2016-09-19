@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Дни Луны</string>
+    <string name="menu_main_history">История</string>
+    <string name="menu_main_settings">Параметры</string>
+    <string name="menu_finish_active_day_fragment_undo">Отменить начало</string>
+    <string name="menu_history_clean">Очистить историю</string>
+    <string name="menu_main_forecast">Прогноз</string>
+    <string name="menu_main_statistic">Статистика</string>
+
+    <string name="button_begin_active_day">Начать</string>
+    <string name="button_finish_active_day">Закончить</string>
+
+    <string name="title_activity_history">История</string>
+    <string name="title_activity_forecast">Прогноз</string>
+    <string name="title_activity_statistic">Статистика</string>
+    <string name="action_settings">Параметры</string>
+    <string name="appwidget_text">Дни Луны</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="dialog_datepicker_bClear_caption">Отменить</string>
+    <string name="dialog_datepicker_bSave_caption">Сохранить</string>
+</resources>

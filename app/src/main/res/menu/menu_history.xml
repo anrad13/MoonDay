@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.anrad.moonday.MainActivity">
+    <item
+        android:id="@+id/menu_history_clear"
+        android:orderInCategory="100"
+        android:title="@string/menu_history_clean"
+        app:showAsAction="never" />
+</menu>
