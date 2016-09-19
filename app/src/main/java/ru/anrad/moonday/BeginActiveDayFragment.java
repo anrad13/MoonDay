@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 //import android.support.v4.app.FragmentManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,9 +118,10 @@ public class BeginActiveDayFragment extends Fragment {
     }
 
     public void onButtonActionClick(View view) {
-        //Log.v(this.getClass().getName(), "Button Begin has pressed");
         dialog.setTargetFragment(this, DATE_PICKER_DIALOG_REQUEST_CODE);
         dialog.show(this.getFragmentManager(), "DatePickerDialog");
+        //this.getFragmentManager().beginTransaction().replace(R.id.activity_main_fragment,dialog);
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

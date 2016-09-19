@@ -46,7 +46,6 @@ public class DatePickerDialog extends DialogFragment {
     }
 
 
-    final String LOG_TAG = "myLogs";
 
     //private TextView tvDay;
     private DatePicker dpDatepicker;
@@ -63,7 +62,6 @@ public class DatePickerDialog extends DialogFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(LOG_TAG, "Save: " + ((Button) v).getText());
                         //dateListener.onSetDate(calendar.getTime());
                         sendResult(CalendarDateFormat.toString(calendar.getTime()));
                         dismiss();
@@ -74,7 +72,6 @@ public class DatePickerDialog extends DialogFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(LOG_TAG, "Clear: " + ((Button) v).getText());
                         //dateListener.onSetDate(null);
                         getTargetFragment().onActivityResult(getTargetRequestCode(), RESULT_CANCEL, null);
                         dismiss();
@@ -132,11 +129,11 @@ public class DatePickerDialog extends DialogFragment {
 
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        Log.d(LOG_TAG, "Dialog 1: onDismiss");
+
     }
 
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        Log.d(LOG_TAG, "Dialog 1: onCancel");
+
     }
 }
