@@ -45,6 +45,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.anrad.moonday.MainActivity" />
         </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.anrad.moonday.MainActivity" />
+        </activity>
 
         <receiver android:name=".MainWidget">
             <intent-filter>

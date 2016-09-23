@@ -1,11 +1,11 @@
 package ru.anrad.moonday.dao;
 
+import android.app.Application;
+import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by Radoselskiy on 07.09.2016.
- */
 public class MoonDayStatistic {
 
     private long hotDurationMSec, hotDurationDay;
@@ -15,15 +15,17 @@ public class MoonDayStatistic {
     private boolean hasHot = false;
     private boolean hasRest = false;
 
+    private static final long DAY_IN_MSEC = 86400000;
+
     public MoonDayStatistic(ArrayList<MoonDay> days) {
         if (days.size()>0) {
             hotDurationMSec = calcHotDuration(days);
-            hotDurationDay = hotDurationMSec /(86400000);
+            hotDurationDay = hotDurationMSec / DAY_IN_MSEC;
             hasHot = true;
         }
         if (days.size()>1) {
             restDurationMSec = calcRestDuration(days);
-            restDurationDay = restDurationMSec /(86400000);
+            restDurationDay = restDurationMSec / DAY_IN_MSEC;
             hasRest = true;
         }
     }
@@ -49,7 +51,7 @@ public class MoonDayStatistic {
 
     public long getBeginForecastLeftDays(Date end) {
         if (hasRest)
-            return (getBeginForecast(end).getTime() - new Date().getTime()) / 86400000;
+            return (getBeginForecast(end).getTime() - new Date().getTime()) / DAY_IN_MSEC;
         return 0;
     }
 
@@ -61,7 +63,7 @@ public class MoonDayStatistic {
 
     public long getEndForecastLeftDays(Date begin) {
         if (hasHot)
-            return (getEndForecast(begin).getTime() - new Date().getTime()) / 86400000;
+            return (getEndForecast(begin).getTime() - new Date().getTime()) / DAY_IN_MSEC;
         return 0;
     }
 

@@ -2,9 +2,11 @@ package ru.anrad.moonday.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -26,8 +28,12 @@ public class HistoryDataSource {
         return instance;
     }
 
+    private Context context;
     private SQLiteDatabase db;
     private MySQLiteHelper dbHelper;
+
+    private final static String STAT_COUNTER_PREF_NAME = "statcounter";
+    private final static int STAT_COUNTER_DEFAULT = 6;
 
     private ArrayList<MoonDay> items = new ArrayList<>();
     private MoonDayStatistic statistic;
@@ -39,24 +45,23 @@ public class HistoryDataSource {
     };
 
     private HistoryDataSource(Context context) {
+        this.context = context;
         this.dbHelper = new MySQLiteHelper(context);
-        this.db = this.dbHelper.getWritableDatabase();
+
+        open();
         loadItemsFromDatabase();
+        close();
     }
 
-    private void open() throws SQLException { this.db = this.dbHelper.getWritableDatabase();
-    }
-    public void close() {
-        this.dbHelper.close();
-    }
+    private void open() throws SQLException { this.db = this.dbHelper.getWritableDatabase();}
+
+    private void close() { this.dbHelper.close(); }
 
     public MoonDayStatistic getStatistic() {
-        return statistic;
+        return getStatistic(this.items);
     }
 
     public ArrayList<MoonDay> getItems() {
-        //loadItemsFromDatabase();
-        //Collections.sort(out, new DutyComparator());
         return items;
     }
 
@@ -97,53 +102,80 @@ public class HistoryDataSource {
     }
 
     private void putItemInDatabase(Date begin, Date end) {
+        open();
         ContentValues values = buildContentValuesForDatabase(begin, end);
         db.insert(MySQLiteHelper.HISTORY_TABLE_NAME, null, values);
-        Log.v(getClass().getName(), "Put new item in history:" +" begin="+begin.toString()+", end="+end);
+        close();
+        //Log.v(getClass().getName(), "Put new item in history:" +" begin="+begin.toString()+", end="+end);
     }
 
     private void deleteItemFromDatabase(MoonDay item) {
+        open();
         db.delete(MySQLiteHelper.HISTORY_TABLE_NAME, MySQLiteHelper.HISTORY_ID + " = ?", new String[]{Long.toString(item.getId())});
-        Log.v(getClass().getName(), "Delete duty in db:" + item.toString());
+        close();
+        //Log.v(getClass().getName(), "Delete duty in db:" + item.toString());
     }
 
     private void updateItemInDatabase(MoonDay item) {
         ContentValues values = buildContentValuesForDatabase(item);
+        open();
         db.update(MySQLiteHelper.HISTORY_TABLE_NAME, values, MySQLiteHelper.HISTORY_ID + " = ?", new String[]{Long.toString(item.getId())});
+        close();
         //Log.v(DutyDataSource.class.getName(), "Update duty in db");
     }
 
     private MoonDay getItemFromDatabase(long id) {
         MoonDay d = null;
+        open();
         Cursor cursor = db.query(MySQLiteHelper.HISTORY_TABLE_NAME, ALL_COLUMNS, MySQLiteHelper.HISTORY_ID + " = ?", new String[]{Long.toString(id)}, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             d = cursorToItem(cursor);
-            Log.v(getClass().getName(), "getItemFromDatabase, id="+ id+ ", item= " + d.toString());
+            //Log.v(getClass().getName(), "getItemFromDatabase, id="+ id+ ", item= " + d.toString());
             cursor.moveToNext();
         }
         cursor.close();
+        close();
         return d;
     }
 
     private void loadItemsFromDatabase() {
         items.clear();
-        Log.v(getClass().getName(), "loadItemsFromDatabase...");
+        //Log.v(getClass().getName(), "loadItemsFromDatabase...");
+        open();
         Cursor cursor = db.query(MySQLiteHelper.HISTORY_TABLE_NAME, ALL_COLUMNS, null, null, null, null, MySQLiteHelper.HISTORY_BEGIN);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             MoonDay d = cursorToItem(cursor);
             items.add(d);
-            Log.v(getClass().getName(), "loadItemsFromDatabase: item: " + d.toString());
+            //Log.v(getClass().getName(), "loadItemsFromDatabase: item: " + d.toString());
             cursor.moveToNext();
         }
         cursor.close();
+        close();
+    }
 
-        if (items.size()>1) {
-            statistic = new MoonDayStatistic(items);
-        } else {
-            statistic = null;
+    private MoonDayStatistic getStatistic(ArrayList<MoonDay> items) {
+        int statCounter = getStatCounter();
+
+        if (items.size() < 1) return null;
+        ArrayList<MoonDay> statItems = new ArrayList<>();
+        for (int i = 0; (i < items.size())||(i < statCounter); i++) {
+            statItems.add(items.get(i));
         }
+        return new MoonDayStatistic(statItems);
+    }
+
+    private int getStatCounter() {
+        int statCounter;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.context);
+        String statCounterString = sp.getString(STAT_COUNTER_PREF_NAME,"0");
+        try {
+            statCounter = Integer.valueOf(statCounterString);
+        } catch (NumberFormatException e) {
+            statCounter = STAT_COUNTER_DEFAULT;
+        }
+        return statCounter;
     }
 
     private MoonDay cursorToItem (Cursor cursor){
