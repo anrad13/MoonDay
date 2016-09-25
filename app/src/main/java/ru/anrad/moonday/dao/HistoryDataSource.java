@@ -160,7 +160,7 @@ public class HistoryDataSource {
 
         if (items.size() < 1) return null;
         ArrayList<MoonDay> statItems = new ArrayList<>();
-        for (int i = 0; (i < items.size())||(i < statCounter); i++) {
+        for (int i = 0; (i < items.size())&(i < statCounter); i++) {
             statItems.add(items.get(i));
         }
         return new MoonDayStatistic(statItems);
