@@ -156,11 +156,14 @@ public class HistoryDataSource {
     }
 
     private MoonDayStatistic getStatistic(ArrayList<MoonDay> items) {
-        int statCounter = getStatCounter();
-
         if (items.size() < 1) return null;
+
+        int statCounter = getStatCounter();
+        if (statCounter > items.size()) statCounter = items.size();
+
+
         ArrayList<MoonDay> statItems = new ArrayList<>();
-        for (int i = 0; (i < items.size())||(i < statCounter); i++) {
+        for (int i = 0; i < statCounter; i++) {
             statItems.add(items.get(i));
         }
         return new MoonDayStatistic(statItems);
