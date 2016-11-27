@@ -50,8 +50,14 @@ public class MoonDayStatistic {
     }
 
     public long getBeginForecastLeftDays(Date end) {
-        if (hasRest)
-            return (getBeginForecast(end).getTime() - new Date().getTime()) / DAY_IN_MSEC;
+        if (hasRest) {
+            long res, beginForecastTime, todayTime;
+            beginForecastTime = getBeginForecast(end).getTime();
+            todayTime = new Date().getTime();
+            res = (beginForecastTime - todayTime) / DAY_IN_MSEC;
+            if (((beginForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
+            return res;
+        }
         return 0;
     }
 
@@ -62,8 +68,14 @@ public class MoonDayStatistic {
     }
 
     public long getEndForecastLeftDays(Date begin) {
-        if (hasHot)
-            return (getEndForecast(begin).getTime() - new Date().getTime()) / DAY_IN_MSEC;
+        if (hasHot) {
+            long res, endForecastTime, todayTime;
+            endForecastTime = getEndForecast(begin).getTime();
+            todayTime = new Date().getTime();
+            res = (endForecastTime - todayTime) / DAY_IN_MSEC;
+            if (((endForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
+            return res;
+        }
         return 0;
     }
 

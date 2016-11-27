@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class HistoryDataSource {
-
+    private final static int DEFAULT_STATISTIC_COUNTER = 4;
     //Singletone functionality
     private static HistoryDataSource instance;
 
@@ -158,7 +158,8 @@ public class HistoryDataSource {
     private MoonDayStatistic getStatistic(ArrayList<MoonDay> items) {
         if (items.size() < 1) return null;
 
-        int statCounter = getStatCounter();
+        //int statCounter = getStatCounter();
+        int statCounter = DEFAULT_STATISTIC_COUNTER;
         if (statCounter > items.size()) statCounter = items.size();
 
 

@@ -58,7 +58,7 @@ public class MainWidget extends AppWidgetProvider {
     }
 
     static void calcWidgetParams(Context context) {
-        /*TODO
+        /*
         Определить есть ли данные по текущему дню
          - если данных нет то серый квадрат с вопросом
          - если день активен, то красный квадрат с (getEndFosecastDaysLeft(current.getBegin)
@@ -71,9 +71,11 @@ public class MainWidget extends AppWidgetProvider {
         if (! currentDS.isEmpty()) {
             if (currentDS.isActive()) {
                 if (stat != null) widgetText = String.valueOf(stat.getEndForecastLeftDays(currentDS.getBegin()));
+                    else widgetText = "";
                 colorInt = context.getResources().getColor(R.color.colorDRRed);
             } else {
                 if (stat != null) widgetText = String.valueOf(stat.getBeginForecastLeftDays(currentDS.getEnd()));
+                        else widgetText = "";
                 colorInt = context.getResources().getColor(R.color.colorDRGreen);
             }
         } else {
