@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import ru.anrad.moonday.dao.CurrentDayDataSource;
 import ru.anrad.moonday.dao.HistoryDataSource;
@@ -29,7 +29,7 @@ import ru.anrad.moonday.dao.MoonDayStatistic;
 public class FinishActiveDayFragment extends Fragment {
 
     private static final String DATE_FORMAT_STRING = "EEE d MMMM";
-    private static SimpleDateFormat DF = new SimpleDateFormat(DATE_FORMAT_STRING);
+    private static SimpleDateFormat DF = new SimpleDateFormat(DATE_FORMAT_STRING, Locale.getDefault());
     public static final int DATE_PICKER_DIALOG_REQUEST_CODE = 100;
 
     OnFragmentInteractionListener interactionListener;
@@ -113,7 +113,7 @@ public class FinishActiveDayFragment extends Fragment {
             String dateString = data.getStringExtra("DATE");
             //Log.v(this.getClass().getName(), "End Active Day: " + dateString);
             try {
-                Date end = new SimpleDateFormat(DatePickerDialog.CalendarDateFormat.DATE_FORMAT_STRING).parse(dateString);
+                Date end = new SimpleDateFormat(DatePickerDialog.CalendarDateFormat.DATE_FORMAT_STRING, Locale.getDefault()).parse(dateString);
                 Date begin = currentDS.getBegin();
                 try {
                     currentDS.finishDay(end);

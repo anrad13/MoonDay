@@ -45,9 +45,11 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.View
         //holder.mIdView.setText(Long.toString(mValues.get(position).getId()));
 
         //holder.mContentView.setText(mValues.get(position).toFormatString());
-        holder.mBeginView.setText(DF.format(mValues.get(position).getBegin()));
-        holder.mEndView.setText(DF.format(mValues.get(position).getEnd()));
+        //holder.mBeginView.setText(DF.format(mValues.get(position).getBegin()));
+        //holder.mEndView.setText(DF.format(mValues.get(position).getEnd()));
         holder.mDaysView.setText(Long.toString(mValues.get(position).getDays()) + " days");
+        holder.mBeginView.setText(DF.format(mValues.get(position).getBegin()) + " - " + DF.format(mValues.get(position).getEnd()));
+        //holder.mEndView.setText(Long.toString(mValues.get(position).getDays()) + " days");
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
 

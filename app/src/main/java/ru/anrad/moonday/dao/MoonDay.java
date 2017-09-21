@@ -2,18 +2,19 @@ package ru.anrad.moonday.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Radoselskiy on 07.09.2016.
  */
 public class MoonDay {
 
-    static final String DATE_FORMAT_STRING = "EEE d MMMM y";
-    private static  SimpleDateFormat DF = new SimpleDateFormat(DATE_FORMAT_STRING);
+    private static final String DATE_FORMAT_STRING = "EEE d MMMM y";
+    private static  SimpleDateFormat DF = new SimpleDateFormat(DATE_FORMAT_STRING, Locale.getDefault());
 
-    long id;
-    Date begin;
-    Date end;
+    private long id;
+    private Date begin;
+    private Date end;
 
     public MoonDay(long _id, Date _begin, Date _end) {
         id = _id;

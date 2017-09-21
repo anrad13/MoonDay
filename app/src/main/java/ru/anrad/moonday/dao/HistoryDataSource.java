@@ -7,14 +7,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 
 public class HistoryDataSource {
     private final static int DEFAULT_STATISTIC_COUNTER = 5;
@@ -165,11 +160,7 @@ public class HistoryDataSource {
 
 
         ArrayList<MoonDay> statItems = new ArrayList<>();
-        /**
-        for (int i = 0; i < statCounter; i++) {
-            statItems.add(items.get(i));
-        }
-         **/
+
         for (int i = itemsSize - statCounter; i < itemsSize; i++) {
             statItems.add(items.get(i));
         }
