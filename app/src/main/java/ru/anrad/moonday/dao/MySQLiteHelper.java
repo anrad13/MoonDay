@@ -21,6 +21,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String CURRENT_BEGIN = "begin";
     public static final String CURRENT_END = "end";
 
+    public static final String EVENT_TABLE_NAME = "day_history";
+    public static final String EVENT_ID = "id";
+    public static final String EVENT_BEGIN = "begin";
+    public static final String EVENT_TYPE = "type";
+
+
     public static final String DATE_NULL_VALUE = "0";
     //public static final String STRING_NULL_VALUE = "";
 
@@ -41,6 +47,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     + HISTORY_END + " long "
                     + ");";
 
+    private static final String EVENT_TABLE_CREATE =
+            "create table "
+                    + EVENT_TABLE_NAME + "("
+                    + EVENT_ID + " integer primary key autoincrement, "
+                    + EVENT_BEGIN + " long, "
+                    + EVENT_TYPE + " integer "
+                    + ");";
+
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -49,6 +63,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(HISTORY_TABLE_CREATE);
         database.execSQL(CURRENT_TABLE_CREATE);
+        database.execSQL(EVENT_TABLE_CREATE);
     }
 
     @Override
@@ -56,6 +71,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.v(MySQLiteHelper.class.getName()," Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
         database.execSQL("DROP TABLE IF EXISTS " + HISTORY_TABLE_NAME);
         database.execSQL("DROP TABLE IF EXISTS " + CURRENT_TABLE_NAME);
+        database.execSQL("DROP TABLE IF EXISTS " + EVENT_TABLE_NAME);
         onCreate(database);
     }
 
