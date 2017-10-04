@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.widget.RemoteViews;
-import android.widget.TextView;
 
 import ru.anrad.moonday.dao.CurrentDayDataSource;
 import ru.anrad.moonday.dao.HistoryDataSource;

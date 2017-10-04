@@ -4,7 +4,9 @@ import android.app.Application;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class MoonDayStatistic {
 
@@ -20,12 +22,12 @@ public class MoonDayStatistic {
     public MoonDayStatistic(ArrayList<MoonDay> days) {
         if (days.size()>0) {
             hotDurationMSec = calcHotDuration(days);
-            hotDurationDay = hotDurationMSec / DAY_IN_MSEC;
+            hotDurationDay = Math.round(hotDurationMSec / DAY_IN_MSEC);
             hasHot = true;
         }
         if (days.size()>1) {
             restDurationMSec = calcRestDuration(days);
-            restDurationDay = restDurationMSec / DAY_IN_MSEC;
+            restDurationDay = Math.round(restDurationMSec / DAY_IN_MSEC);
             hasRest = true;
         }
     }
@@ -45,7 +47,8 @@ public class MoonDayStatistic {
 
     public Date getBeginForecast(Date end) {
         if (hasRest)
-            return new Date(end.getTime() + restDurationMSec);
+            //return new Date(end.getTime() + + restDurationDay*DAY_IN_MSEC);
+            return addDaysToDate(end, restDurationDay);
         return null;
     }
 
@@ -53,9 +56,9 @@ public class MoonDayStatistic {
         if (hasRest) {
             long res, beginForecastTime, todayTime;
             beginForecastTime = getBeginForecast(end).getTime();
-            todayTime = new Date().getTime();
+            todayTime = today().getTime();
             res = (beginForecastTime - todayTime) / DAY_IN_MSEC;
-            if (((beginForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
+            //if (((beginForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
             return res;
         }
         return 0;
@@ -63,7 +66,8 @@ public class MoonDayStatistic {
 
     public Date getEndForecast(Date begin) {
         if (hasHot)
-            return new Date(begin.getTime() + hotDurationMSec);
+            //return new Date(begin.getTime() + hotDurationDay*DAY_IN_MSEC);
+            return addDaysToDate(begin, hotDurationDay);
         return null;
     }
 
@@ -71,9 +75,9 @@ public class MoonDayStatistic {
         if (hasHot) {
             long res, endForecastTime, todayTime;
             endForecastTime = getEndForecast(begin).getTime();
-            todayTime = new Date().getTime();
+            todayTime = today().getTime();
             res = (endForecastTime - todayTime) / DAY_IN_MSEC;
-            if (((endForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
+            //if (((endForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
             return res;
         }
         return 0;
@@ -95,5 +99,19 @@ public class MoonDayStatistic {
             v += (days.get(i).getBegin().getTime() - days.get(i-1).getEnd().getTime());
         }
         return v/(days.size() - 1);
+    }
+    private Date today() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
+        return c.getTime();
+    }
+
+    private Date addDaysToDate(Date date, long days) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE,(int)days);
+        return c.getTime();
     }
 }

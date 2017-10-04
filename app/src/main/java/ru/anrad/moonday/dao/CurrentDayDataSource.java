@@ -80,9 +80,9 @@ public class CurrentDayDataSource {
     public Date getBegin() { return begin; }
     public Date getEnd() { return end; }
 
-    public void beginDay(Date _begin) throws IllegalArgumentException {
+    public void beginDay(Date date) throws IllegalArgumentException {
         if (isActive) throw new RuntimeException("Error: Can't do beginDay for active day");
-        //@TODO Сделать проверку что введенное значение не меньше предыдущего значения и не более текущего дня
+        Date _begin = setMidnight(date);
         if (_begin.after(today()))
             throw new IllegalArgumentException("Дата начала не может быть больше сегодня");
         if (end != null) {
@@ -96,8 +96,9 @@ public class CurrentDayDataSource {
         updateCurrentDayInDatabase();
     }
 
-    public void finishDay(Date _end) throws IllegalArgumentException {
+    public void finishDay(Date date) throws IllegalArgumentException {
         if (!isActive) throw new RuntimeException("Error: Can't do finishDay for not active day");
+        Date _end = setMidnight(date);
         //@TODO Сделать проверку что введенное значение не меньше значения begin и не более текущего дня
         if (_end.after(today()))
             throw new IllegalArgumentException("Дата завершения не может быть больше сегодня");
@@ -162,9 +163,16 @@ public class CurrentDayDataSource {
         return values;
     }
 
-
     private Date today() {
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
+        return c.getTime();
+    }
+    private Date setMidnight(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
         c.set(Calendar.HOUR, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND,0);
