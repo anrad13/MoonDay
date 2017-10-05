@@ -21,7 +21,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String CURRENT_BEGIN = "begin";
     public static final String CURRENT_END = "end";
 
-    public static final String EVENT_TABLE_NAME = "day_history";
+    public static final String EVENT_TABLE_NAME = "events";
     public static final String EVENT_ID = "id";
     public static final String EVENT_BEGIN = "begin";
     public static final String EVENT_TYPE = "type";
