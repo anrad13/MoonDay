@@ -20,8 +20,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import ru.anrad.moonday.dao.CurrentDayDataSource;
+import ru.anrad.moonday.dao.Event;
 import ru.anrad.moonday.dao.HistoryDataSource;
 import ru.anrad.moonday.dao.MoonDayStatistic;
+import ru.anrad.moonday.dao.Status;
+import ru.anrad.moonday.dao.StatusService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -34,12 +37,14 @@ public class FinishActiveDayFragment extends Fragment {
 
     OnFragmentInteractionListener interactionListener;
     DatePickerDialog dialog;
-    CurrentDayDataSource currentDS;
-    HistoryDataSource historyDS;
+    //CurrentDayDataSource currentDS;
+    //HistoryDataSource historyDS;
+    StatusService statusService;
 
-    Date begin;
-    Date endForecast;
-    long daysLeft;
+    Status status;
+    //Date begin;
+    //Date endForecast;
+    //long daysLeft;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +64,13 @@ public class FinishActiveDayFragment extends Fragment {
         });
 
         TextView tBegin = (TextView) view.findViewById(R.id.fragment_finish_active_day_from);
-        tBegin.setText(DF.format(begin));
+        tBegin.setText(DF.format(status.getBegin()));
 
         TextView tEnd = (TextView) view.findViewById(R.id.fragment_finish_active_day_to);
         TextView tDaysLeft = (TextView) view.findViewById(R.id.fragment_finish_active_day_left);
-        if (endForecast != null) {
-            tEnd.setText(DF.format(endForecast));
-            tDaysLeft.setText(daysLeft + " дней");
+        if (status.getForecast() != null) {
+            tEnd.setText(DF.format(status.getForecast()));
+            tDaysLeft.setText(status.getForecastLeftDays() + " дней");
         } else {
             tEnd.setText("???");
         }
@@ -86,18 +91,20 @@ public class FinishActiveDayFragment extends Fragment {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
 
-        currentDS = CurrentDayDataSource.getInstance(context.getApplicationContext());
-        historyDS = HistoryDataSource.getInstance(context.getApplicationContext());
+        //currentDS = CurrentDayDataSource.getInstance(context.getApplicationContext());
+        //historyDS = HistoryDataSource.getInstance(context.getApplicationContext());
+        statusService = new StatusService(context);
         //
-        begin = currentDS.getBegin();
-        endForecast = null;
-        daysLeft = 0;
+        status = statusService.getCurrentStatus();
+        //begin = currentDS.getBegin();
+        //endForecast = null;
+        //daysLeft = 0;
         //
-        MoonDayStatistic stat= historyDS.getStatistic();
-        if ( stat != null && stat.hasHot() ) {
-            endForecast = stat.getEndForecast(begin);
-            daysLeft = stat.getEndForecastLeftDays(begin);
-        }
+        //MoonDayStatistic stat = historyDS.getStatistic();
+        //if ( stat != null && stat.hasHot() ) {
+        //    endForecast = stat.getEndForecast(begin);
+        //    daysLeft = stat.getEndForecastLeftDays(begin);
+        //}
 
     }
 
@@ -109,6 +116,7 @@ public class FinishActiveDayFragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Make sure fragment codes match up
+        /*
         if (requestCode == DATE_PICKER_DIALOG_REQUEST_CODE & resultCode == DatePickerDialog.RESULT_OK) {
             String dateString = data.getStringExtra("DATE");
             //Log.v(this.getClass().getName(), "End Active Day: " + dateString);
@@ -126,6 +134,26 @@ public class FinishActiveDayFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        */
+        if (requestCode == DATE_PICKER_DIALOG_REQUEST_CODE & resultCode == DatePickerDialog.RESULT_OK) {
+            String dateString = data.getStringExtra("DATE");
+            //Log.v(this.getClass().getName(), "End Active Day: " + dateString);
+            try {
+                Date end = new SimpleDateFormat(DatePickerDialog.CalendarDateFormat.DATE_FORMAT_STRING, Locale.getDefault()).parse(dateString);
+                //Date begin = currentDS.getBegin();
+                try {
+                    //currentDS.finishDay(end);
+                    //historyDS.putItem(begin, end);
+                    statusService.changeStatus(end);
+                    interactionListener.onFragmentInteraction(OnFragmentInteractionListener.DAY_HAS_ENDED);
+                } catch (IllegalArgumentException e) {
+                    Snackbar.make(this.getView(), e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override
@@ -138,10 +166,15 @@ public class FinishActiveDayFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.menu_finish_active_day_fragment_undo) {
-            currentDS.undoBeginDay();
+            //currentDS.undoBeginDay();
+            statusService.undoCurrentStatus();
             interactionListener.onFragmentInteraction(OnFragmentInteractionListener.DAY_HAS_ENDED);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private StatusService getStatusService() {
+        return statusService;
     }
 }

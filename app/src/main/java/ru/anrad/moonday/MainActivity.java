@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ru.anrad.moonday.dao.CurrentDayDataSource;
+import ru.anrad.moonday.dao.Status;
+import ru.anrad.moonday.dao.StatusService;
+import ru.anrad.moonday.dao.StatusType;
 
 public class MainActivity extends AppCompatActivity
     implements OnFragmentInteractionListener {
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setMainActivityFragment() {
+        /*
         CurrentDayDataSource currentDS = CurrentDayDataSource.getInstance(getApplicationContext());
         Fragment f;
         if (currentDS.isActive()) {
@@ -97,6 +101,18 @@ public class MainActivity extends AppCompatActivity
             f =  new BeginActiveDayFragment();
         }
         this.getFragmentManager().beginTransaction().replace(R.id.activity_main_fragment, f).commit();
+        */
+        //CurrentDayDataSource currentDS = CurrentDayDataSource.getInstance(getApplicationContext());
+        StatusService statusService = new StatusService(this.getApplicationContext());
+        Status currentStatus = statusService.getCurrentStatus();
+        Fragment f;
+        if (currentStatus.getType().equals(StatusType.RED)) {
+            f = new FinishActiveDayFragment();
+        } else {
+            f =  new BeginActiveDayFragment();
+        }
+        this.getFragmentManager().beginTransaction().replace(R.id.activity_main_fragment, f).commit();
+
     }
 
 }

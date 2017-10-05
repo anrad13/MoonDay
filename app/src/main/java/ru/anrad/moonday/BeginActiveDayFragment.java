@@ -20,6 +20,8 @@ import java.util.Date;
 import ru.anrad.moonday.dao.CurrentDayDataSource;
 import ru.anrad.moonday.dao.HistoryDataSource;
 import ru.anrad.moonday.dao.MoonDayStatistic;
+import ru.anrad.moonday.dao.Status;
+import ru.anrad.moonday.dao.StatusService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -35,15 +37,15 @@ public class BeginActiveDayFragment extends Fragment {
     OnFragmentInteractionListener interactionListener;
     DatePickerDialog dialog;
 
-    CurrentDayDataSource currentDS;
-    HistoryDataSource historyDS;
+    //CurrentDayDataSource currentDS;
+    //HistoryDataSource historyDS;
 
-    String nextDayBeginForecast;
-    String prevDayEnd;
+    StatusService statusService;
+    Status status;
 
-    Date end;
-    Date beginForecast;
-    long daysLeft;
+    //Date end;
+    //Date beginForecast;
+    //long daysLeft;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -57,8 +59,8 @@ public class BeginActiveDayFragment extends Fragment {
         });
 
         TextView tBegin = (TextView) view.findViewById(R.id.fragment_begin_active_day_from);
-        if (end != null) {
-            tBegin.setText(DF.format(end));
+        if (status.getBegin() != null) {
+            tBegin.setText(DF.format(status.getBegin()));
         } else {
             tBegin.setText("???");
             //Snackbar.make(view, "Нет предыдущих данных", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -69,14 +71,14 @@ public class BeginActiveDayFragment extends Fragment {
         TextView tDaysLeft = (TextView) view.findViewById(R.id.fragment_begin_active_day_left);
         TextView tDaysLeftCaption = (TextView) view.findViewById(R.id.fragment_begin_active_day_left_caption);
 
-        if (beginForecast != null) {
-            tEnd.setText(DF.format(beginForecast));
-            if (daysLeft < 0) {
+        if (status.getForecast() != null) {
+            tEnd.setText(DF.format(status.getForecast()));
+            if (status.getForecastLeftDays() < 0) {
                 tDaysLeftCaption.setText("Задержка:");
-                tDaysLeft.setText((daysLeft * (-1)) + " дней");
+                tDaysLeft.setText((status.getForecastLeftDays() * (-1)) + " дней");
             } else {
                 tDaysLeftCaption.setText("Осталось:");
-                tDaysLeft.setText(daysLeft + " дней");
+                tDaysLeft.setText(status.getForecastLeftDays() + " дней");
             }
         } else {
             tEnd.setText("???");
@@ -98,20 +100,23 @@ public class BeginActiveDayFragment extends Fragment {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
 
-        currentDS = CurrentDayDataSource.getInstance(context.getApplicationContext());
-        historyDS = HistoryDataSource.getInstance(context.getApplicationContext());
+        //currentDS = CurrentDayDataSource.getInstance(context.getApplicationContext());
+        //historyDS = HistoryDataSource.getInstance(context.getApplicationContext());
+        statusService = new StatusService(context);
+        //
+        status = statusService.getCurrentStatus();
 
-        end = null;
-        beginForecast = null;
-        daysLeft = 0;
-        if (currentDS.getEnd() != null) {
-            end = currentDS.getEnd();
-            MoonDayStatistic stat= historyDS.getStatistic();
-            if ( stat != null && stat.hasRest() ) {
-                beginForecast = stat.getBeginForecast(end);
-                daysLeft = stat.getBeginForecastLeftDays(end);
-            }
-        }
+        //end = null;
+        //beginForecast = null;
+        //daysLeft = 0;
+        //if (currentDS.getEnd() != null) {
+        //    end = currentDS.getEnd();
+        //   MoonDayStatistic stat= historyDS.getStatistic();
+        //    if ( stat != null && stat.hasRest() ) {
+        //        beginForecast = stat.getBeginForecast(end);
+        //        daysLeft = stat.getBeginForecastLeftDays(end);
+        //    }
+        //}
     }
 
     public void onButtonActionClick(View view) {
@@ -130,7 +135,8 @@ public class BeginActiveDayFragment extends Fragment {
             try {
                 Date d = df.parse(dateString);
                 try {
-                    currentDS.beginDay(d);
+                    //currentDS.beginDay(d);
+                    statusService.changeStatus(d);
                     interactionListener.onFragmentInteraction(OnFragmentInteractionListener.DAY_HAS_BEGAN);
                 } catch (IllegalArgumentException e) {
                     Snackbar.make(this.getView(), e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
