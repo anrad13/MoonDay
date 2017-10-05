@@ -1,6 +1,7 @@
 package ru.anrad.moonday.dao;
 
 import java.util.Date;
+import java.util.Objects;
 
 
 /**
@@ -28,6 +29,25 @@ public class Event {
 
     public StatusType getType(){
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return "Event: begin=" + getDate().toString()+" type = " + getType().toString();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if(o == null || ! (o instanceof Event) ) return false;
+        Event e = (Event) o;
+        return e.getDate().equals(date) && e.getType().equals(type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, type);
     }
 
 }

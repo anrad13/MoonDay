@@ -1,10 +1,11 @@
 package ru.anrad.moonday.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +15,18 @@ import java.util.List;
 
 public class EventDataSource {
 
-    private SQLiteDatabase db;
+    //private SQLiteDatabase db;
     private MySQLiteHelper dbHelper;
 
     private static final String[] EVENT_TABLE_ALL_COLUMNS = {
+            MySQLiteHelper.EVENT_ID,
             MySQLiteHelper.EVENT_BEGIN,
             MySQLiteHelper.EVENT_TYPE,
     };
+
+    private static final int EVENT_COL_ID = 0;
+    private static final int EVENT_COL_BEGIN = 1;
+    private static final int EVENT_COL_TYPE = 2;
 
     private static final int GREEN_TYPE = 0;
     private static final int RED_TYPE = 1;
@@ -29,21 +35,24 @@ public class EventDataSource {
        dbHelper = new MySQLiteHelper(context);
     }
 
+    /*
     private SQLiteDatabase openDB() {
        return this.dbHelper.getWritableDatabase();
     }
+    */
 
+    /*
     private void close() {
         this.dbHelper.close();
     }
+    /*
 
         /**
          * Создает новое событие в таблице
-         *
-         * @param event
          */
         public void put(Event event){
-
+            ContentValues values = eventToContentValues(event);
+            getDB().insert(MySQLiteHelper.EVENT_TABLE_NAME, null, values);
         }
 
         /**
@@ -52,49 +61,85 @@ public class EventDataSource {
          */
         public Event getLast(){
             Event e;
-            Cursor cursor =
-                    dbHelper.
-                    getWritableDatabase().
-                    query(
-                            MySQLiteHelper.EVENT_TABLE_NAME,
-                            EVENT_TABLE_ALL_COLUMNS,
-                            null,
-                            null,
-                            null,
-                            null,
-                            MySQLiteHelper.EVENT_BEGIN
-                    );
+            Cursor cursor = getCursor();
             if (cursor.moveToLast()) {
-                // В таблице есть значения
-                //begin
-                Date begin = new Date(cursor.getLong(0));
-                //type
-                StatusType type;
-                if (cursor.getInt(1) == RED_TYPE) {  type = StatusType.RED;} else { type = StatusType.GREEN;}
-                e = new Event(begin, type);
+                // Есть значение
+                e = cursorToEvent(cursor);
             }
             else {
                 // Значений нет. Используем по умолчанию пустое событие
                 e = new Event();
             }
             cursor.close();
-
             return e;
         }
 
         /**
          * Возвращает все события из таблицы отсортированные по "возрасту" начиная с
-         * самого старшего
+         * самого первого (старшего)
          */
         public List<Event> getAll(){
-            return null;
+            List<Event> l = new ArrayList<>();
+            Cursor cursor = getCursor();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Event e = cursorToEvent(cursor);
+                l.add(e);
+                //Log.v(getClass().getName(), "loadItemsFromDatabase: item: " + d.toString());
+                cursor.moveToNext();
+            }
+            cursor.close();
+            return l;
         }
 
         /**
          * Удаляет последнее событие из таблицы событий
          */
         public void delete(){
-
+            Cursor cursor = getCursor();
+            if (cursor.moveToLast()) {
+                // Есть значение
+                long id = cursor.getLong(EVENT_COL_ID);
+                //@TODO for delete record
+                //db.execSQL("DELETE FROM " + MySQLiteHelper.EVENT_TABLE_NAME + " WHERE " + MySQLiteHelper.EVENT_ID + " = " + id + "");
+                getDB().delete(MySQLiteHelper.EVENT_TABLE_NAME, MySQLiteHelper.EVENT_ID + " = " + id, null);
+            }
+            cursor.close();
         }
+
+    private Event cursorToEvent (Cursor cursor){
+        Date begin;
+        StatusType type;
+        begin = new Date(cursor.getLong(EVENT_COL_BEGIN));
+        if (cursor.getInt(EVENT_COL_TYPE) == RED_TYPE) {  type = StatusType.RED;} else { type = StatusType.GREEN;}
+        return new Event(begin, type);
+    }
+
+    private Cursor getCursor() {
+        return getDB().
+                        query(
+                                MySQLiteHelper.EVENT_TABLE_NAME,
+                                EVENT_TABLE_ALL_COLUMNS,
+                                null,
+                                null,
+                                null,
+                                null,
+                                MySQLiteHelper.EVENT_BEGIN
+                        );
+    }
+
+    private SQLiteDatabase getDB() {
+        return dbHelper.getWritableDatabase();
+    }
+
+    private ContentValues eventToContentValues(Event event) {
+        ContentValues values = new ContentValues();
+        int type;
+        if (event.getType() == StatusType.GREEN) {  type = GREEN_TYPE;} else { type = RED_TYPE;}
+        values.put(MySQLiteHelper.EVENT_TYPE, type);
+        values.put(MySQLiteHelper.EVENT_BEGIN, event.getDate().getTime());
+        return values;
+    }
+
 
 }
