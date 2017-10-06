@@ -7,8 +7,12 @@ import android.widget.TextView;
 
 import ru.anrad.moonday.dao.HistoryDataSource;
 import ru.anrad.moonday.dao.MoonDayStatistic;
+import ru.anrad.moonday.dao.Statistic;
+import ru.anrad.moonday.dao.StatusService;
 
 public class StatisticActivity extends AppCompatActivity {
+
+    //private StatusService statusService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +26,19 @@ public class StatisticActivity extends AppCompatActivity {
         TextView hotDays = (TextView) findViewById(R.id.activity_statistic_hot);
         TextView restDays = (TextView) findViewById(R.id.activity_statistic_rest);
 
-        MoonDayStatistic stat = HistoryDataSource.getInstance(this).getStatistic();
-        if (stat != null) {
-            hotDays.setText(stat.getHotDurationDay() + " дней");
-            restDays.setText(stat.getRestDurationDay() + " дней");
+        //MoonDayStatistic stat = HistoryDataSource.getInstance(this).getStatistic();
+        Statistic stat = new StatusService(this).getStatistic();
+
+        if (stat.isHasRed()) {
+            hotDays.setText(stat.getRedDays() + " дней");
         } else {
-            hotDays.setText("??? дней");
-            restDays.setText("??? дней");
+            hotDays.setText("Недостаточно данных");
+        }
+
+        if (stat.isHasGreen()) {
+            restDays.setText(stat.getGreenDays() + " дней");
+        } else {
+            restDays.setText("Недостаточно данных");
         }
     }
 }

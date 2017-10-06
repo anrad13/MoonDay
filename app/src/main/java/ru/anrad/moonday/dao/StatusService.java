@@ -24,18 +24,11 @@ public class StatusService {
     public Status getCurrentStatus() {
         Event e = getEventDataSource().getLast();
         Statistic s = getStatistic();
+
         Date forecast = null;
-        switch (e.getType()) {
-            case GREEN:
-                forecast = forecastDate(e.getDate(), s.getRedDays());
-                break;
-            case RED:
-                forecast = forecastDate(e.getDate(), s.getGreenDays());
-                break;
-            case UNKNOWN:
-            default:
-                 forecast = null;
-        }
+        if (e.getType() == StatusType.RED && s.isHasRed()) forecast = forecastDate(e.getDate(), s.getRedDays());
+        if (e.getType() == StatusType.GREEN && s.isHasGreen()) forecast = forecastDate(e.getDate(), s.getGreenDays());
+
         return new Status(e.getDate(), e.getType(), forecast);
     }
 
@@ -64,6 +57,10 @@ public class StatusService {
         return getCurrentStatus();
     }
 
+    public Statistic getStatistic() {
+        return new Statistic(getHistory());
+    }
+
     public List<Interval> getHistory() {
         List<Interval> l = new ArrayList<>();
         Date begin = null;
@@ -85,9 +82,37 @@ public class StatusService {
         return l;
     }
 
-    public Statistic getStatistic() {
-        return new Statistic(getHistory());
+    public List<Interval> getForecast() {
+        List<Interval> forecast = new ArrayList<>();
+        Status status = getCurrentStatus();
+        Statistic stat = getStatistic();
+
+        long begin;
+        long end;
+        switch (status.getType()) {
+            case RED:
+                begin = status.getBegin().getTime();
+                break;
+            case GREEN:
+                begin = status.getForecast().getTime();
+                break;
+            case UNKNOWN:
+            default:
+                return forecast;
+        }
+
+        if ( (!stat.isHasGreen()) || (!stat.isHasRed())) return forecast;
+
+        for (int i = 0; i < 12; i++) {
+            begin = begin + i * (stat.getRedLengthMsec() + stat.getGreenLengthMsec());
+            end = begin + stat.getRedLengthMsec();
+            Interval interval = new Interval(new Date(begin), new Date(end));
+            forecast.add(interval);
+        }
+
+        return forecast;
     }
+
 
     private EventDataSource getEventDataSource() {
         return eventDataSource;

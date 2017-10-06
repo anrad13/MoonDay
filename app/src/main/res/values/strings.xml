@@ -3,6 +3,7 @@
     <string name="menu_main_history">История</string>
     <string name="menu_main_settings">Параметры</string>
     <string name="menu_finish_active_day_fragment_undo">Отменить начало</string>
+    <string name="menu_begin_active_day_fragment_undo">Отменить окончание</string>
     <string name="menu_history_clean">Очистить историю</string>
     <string name="menu_main_forecast">Прогноз</string>
     <string name="menu_main_statistic">Статистика</string>

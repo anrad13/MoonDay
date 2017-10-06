@@ -8,6 +8,9 @@ import android.os.Bundle;
 //import android.support.v4.app.FragmentManager;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,6 +51,13 @@ public class BeginActiveDayFragment extends Fragment {
     //long daysLeft;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_begin_active_day, container, false);
         Button b = (Button) view.findViewById(R.id.fragment_begin_active_day_action);
@@ -62,7 +72,7 @@ public class BeginActiveDayFragment extends Fragment {
         if (status.getBegin() != null) {
             tBegin.setText(DF.format(status.getBegin()));
         } else {
-            tBegin.setText("???");
+            tBegin.setText("Нет данных");
             //Snackbar.make(view, "Нет предыдущих данных", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         }
@@ -81,8 +91,8 @@ public class BeginActiveDayFragment extends Fragment {
                 tDaysLeft.setText(status.getForecastLeftDays() + " дней");
             }
         } else {
-            tEnd.setText("???");
-            tDaysLeft.setText("Х дней");
+            tEnd.setText("Недостаточно данных");
+            tDaysLeft.setText("Недостаточно данных");
         }
         dialog = new DatePickerDialog();
 
@@ -149,5 +159,22 @@ public class BeginActiveDayFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_begin_active_day_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_begin_active_day_fragment_undo) {
+            //currentDS.undoBeginDay();
+            statusService.undoCurrentStatus();
+            interactionListener.onFragmentInteraction(OnFragmentInteractionListener.DAY_HAS_BEGAN);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

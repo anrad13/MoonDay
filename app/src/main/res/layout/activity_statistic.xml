@@ -54,7 +54,7 @@
                                 android:layout_margin="@dimen/text_margin"
                                 android:textAlignment="textEnd"
                                 android:textSize="16dp"
-                                android:text="Длительность:"
+                                android:text="Красная зона:"
                                 android:textStyle="bold"
                                 />
                             <TextView
@@ -71,7 +71,7 @@
                             android:layout_margin="@dimen/text_margin"
                             android:textAlignment="textEnd"
                             android:textSize="16dp"
-                            android:text=" Интервал:"
+                            android:text=" Зеленая зона:"
                             android:textStyle="bold"
                             />
                         <TextView

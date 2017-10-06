@@ -22,31 +22,31 @@ public class Statistic {
 
     public Statistic(List<Interval> days) {
         if (days.size()>0) {
-            redLengthMsec = calcHotDuration(days);
-            redDays = redLengthMsec / DAY_IN_MSEC;
+            redLengthMsec = calcRedDuration(days);
+            redDays = Math.round((double)redLengthMsec / (double)DAY_IN_MSEC);
             hasRed = true;
         }
         if (days.size()>1) {
-            greenLengthMsec = calcRestDuration(days);
-            greenDays = Math.round(greenLengthMsec / DAY_IN_MSEC);
+            greenLengthMsec = calcGreenDuration(days);
+            greenDays = Math.round( (double)greenLengthMsec / (double)DAY_IN_MSEC);
             hasGreen = true;
         }
     }
 
-    private long calcHotDuration(List<Interval> days) {
+    private long calcRedDuration(List<Interval> days) {
         long v = 0;
         for (Interval day : days) {
             v += day.getEnd().getTime() - day.getBegin().getTime();
             }
-        return v / days.size();
+        return Math.round((double)v / (double)days.size());
     }
 
-    private long calcRestDuration(List<Interval> days) {
+    private long calcGreenDuration(List<Interval> days) {
         long v = 0;
         for (int i = 1; i < days.size(); i++) {
             v += (days.get(i).getBegin().getTime() - days.get(i-1).getEnd().getTime());
         }
-        return v/(days.size() - 1);
+        return Math.round((double)v/(double)(days.size() - 1));
     }
 
     public long getRedLengthMsec() {
@@ -71,5 +71,17 @@ public class Statistic {
 
     public boolean isHasGreen() {
         return hasGreen;
+    }
+
+    @Override
+    public String toString() {
+        return "Statistic{" +
+                "redLengthMsec=" + redLengthMsec +
+                ", greenLengthMsec=" + greenLengthMsec +
+                ", redDays=" + redDays +
+                ", greenDays=" + greenDays +
+                ", hasRed=" + hasRed +
+                ", hasGreen=" + hasGreen +
+                '}';
     }
 }

@@ -11,10 +11,13 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ru.anrad.moonday.dao.HistoryDataSource;
+import ru.anrad.moonday.dao.Interval;
 import ru.anrad.moonday.dao.MoonDay;
 import ru.anrad.moonday.dao.MoonDayStatistic;
+import ru.anrad.moonday.dao.StatusService;
 
 public class ForecastActivity
         extends AppCompatActivity
@@ -41,10 +44,10 @@ public class ForecastActivity
 
     }
 
-    private ArrayList<MoonDay> getForecast() {
+    private List<Interval> getForecast() {
+        /*
         forecast.clear();
-
-        MoonDayStatistic stat = HistoryDataSource.getInstance(this).getStatistic();
+         MoonDayStatistic stat = HistoryDataSource.getInstance(this).getStatistic();
         if (stat == null) return forecast;
 
         Date begin;
@@ -54,7 +57,8 @@ public class ForecastActivity
             end = stat.getEndForecast(begin);
             forecast.add(new MoonDay(i, begin, end));
         }
-        return forecast;
+        */
+        return new StatusService(this).getForecast();
     }
 
     @Override
@@ -75,9 +79,10 @@ public class ForecastActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onListInteraction(MoonDay item) {
+    @Override
+    public void onListInteraction(Interval item) {
         //Log.v(this.getClass().getName(), "onListInteraction(MoonDay):" + item.toString() );
-        //TODO Сделать активити для редактирования\удаления записи в базе
+        //TODO удалить эту возможность
     }
 
 }

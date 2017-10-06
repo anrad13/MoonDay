@@ -72,7 +72,7 @@ public class FinishActiveDayFragment extends Fragment {
             tEnd.setText(DF.format(status.getForecast()));
             tDaysLeft.setText(status.getForecastLeftDays() + " дней");
         } else {
-            tEnd.setText("???");
+            tEnd.setText("Недостаточно данных");
         }
 
         dialog = new DatePickerDialog();

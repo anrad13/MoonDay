@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
 
+import ru.anrad.moonday.dao.Interval;
 import ru.anrad.moonday.dao.MoonDay;
 
 /**
@@ -22,10 +23,10 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
     static final String DATE_FORMAT_STRING = "EEEE d MMMM y";
     private static SimpleDateFormat DF = new SimpleDateFormat(DATE_FORMAT_STRING);
 
-    private final List<MoonDay> mValues;
+    private final List<Interval> mValues;
     private final ForecastRVAdapter.OnListInteractionListener mListener;
 
-    public ForecastRVAdapter(List<MoonDay> items, ForecastRVAdapter.OnListInteractionListener listener) {
+    public ForecastRVAdapter(List<Interval> items, ForecastRVAdapter.OnListInteractionListener listener) {
         mValues = items;
         //mValues = new ArrayList<>(items);
         //Collections.sort(mValues, new ItemComparator());
@@ -72,7 +73,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
         public final TextView mBeginView;
         public final TextView mEndView;
         //public final TextView mDaysView;
-        public MoonDay mItem;
+        public Interval mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -100,7 +101,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
 
     public interface OnListInteractionListener {
         // TODO: Update argument type and name
-        void onListInteraction(MoonDay item);
+        void onListInteraction(Interval item);
     }
 
 }

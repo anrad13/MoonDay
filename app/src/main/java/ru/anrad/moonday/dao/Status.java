@@ -1,5 +1,7 @@
 package ru.anrad.moonday.dao;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +20,7 @@ public class Status {
         this.begin = begin;
         this.type = type;
         this.forecast = forecast;
+        //Log.v(getClass().getName(), " Create Status = " + this.toString());
     }
 
     public Date getBegin() {
@@ -38,10 +41,7 @@ public class Status {
         forecastTime = getForecast().getTime();
         todayTime = today().getTime();
 
-        res = TimeUnit.DAYS.convert(forecastTime - todayTime, TimeUnit.MICROSECONDS);
-
-        //res = (forecastTime - todayTime) / DAY_IN_MSEC;
-        //if (((endForecastTime - todayTime) % DAY_IN_MSEC) != 0) res += 1;
+        res = (forecastTime - todayTime) / DAY_IN_MSEC;
         return res;
     }
 
@@ -53,6 +53,12 @@ public class Status {
         return c.getTime();
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Status{" +
+                "begin=" + begin +
+                ", type=" + type +
+                ", forecast=" + forecast +
+                '}';
+    }
 }
