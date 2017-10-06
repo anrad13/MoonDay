@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Radoselskiy on 05.10.2017.
  */
-
+//@TODO CONCERN to Insert Statistic in State as object so it doesn't use without Statistic
 public class Status {
 
     private Date begin;
