@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import ru.anrad.moonday.dao.Interval;
 import ru.anrad.moonday.dao.MoonDay;
 
 import java.text.SimpleDateFormat;
@@ -24,11 +25,12 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.View
     static final String DATE_FORMAT_STRING = "EEE d MMMM y";
     private static SimpleDateFormat DF = new SimpleDateFormat(DATE_FORMAT_STRING);
 
-    private final List<MoonDay> mValues;
+    //private final List<MoonDay> mValues;
+    private final List<Interval> mValues;
     private final HistoryRVAdapter.OnListInteractionListener mListener;
 
-    public HistoryRVAdapter(List<MoonDay> items, HistoryRVAdapter.OnListInteractionListener listener) {
-       mValues = new ArrayList<>(items);
+    public HistoryRVAdapter(List<Interval> items, HistoryRVAdapter.OnListInteractionListener listener) {
+        mValues = new ArrayList<>(items);
         Collections.sort(mValues, new ItemComparator());
         mListener = listener;
     }
@@ -77,7 +79,7 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.View
         public final TextView mBeginView;
         public final TextView mEndView;
         public final TextView mDaysView;
-        public MoonDay mItem;
+        public Interval mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -94,9 +96,9 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.View
         }
     }
 
-    public class ItemComparator implements Comparator<MoonDay> {
+    public class ItemComparator implements Comparator<Interval> {
         @Override
-        public int compare(MoonDay d1, MoonDay d2) {
+        public int compare(Interval d1, Interval d2) {
             if (d2.getBegin().getTime() > d1.getBegin().getTime()) return 1;
             if (d2.getBegin().getTime() < d1.getBegin().getTime()) return -1;
             return 0;
@@ -105,7 +107,7 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.View
 
     public interface OnListInteractionListener {
         // TODO: Update argument type and name
-        void onListInteraction(MoonDay item);
+        void onListInteraction(Interval item);
     }
 
 }

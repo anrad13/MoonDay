@@ -9,14 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ru.anrad.moonday.dao.HistoryDataSource;
+import ru.anrad.moonday.dao.Interval;
 import ru.anrad.moonday.dao.MoonDay;
+import ru.anrad.moonday.dao.StatusService;
 
 public class HistoryActivity
         extends AppCompatActivity
         //implements MoonDayHistoryFragment.OnListFragmentInteractionListener {
         implements HistoryRVAdapter.OnListInteractionListener {
 
-    private HistoryDataSource historyDS;
+    //private HistoryDataSource historyDS;
+    private StatusService statusService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +30,14 @@ public class HistoryActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        historyDS = HistoryDataSource.getInstance(this);
+        //historyDS = HistoryDataSource.getInstance(this);
+        statusService = new StatusService(this);
 
         //this.getSupportFragmentManager().beginTransaction().add(R.id.activity_history_fragment, new MoonDayHistoryFragment()).commit();
         RecyclerView rView = (RecyclerView) findViewById(R.id.activity_history_list);
         rView.setLayoutManager(new LinearLayoutManager(this));
-        rView.setAdapter(new HistoryRVAdapter(historyDS.getItems(), this));
+        //rView.setAdapter(new HistoryRVAdapter(historyDS.getItems(), this));
+        rView.setAdapter(new HistoryRVAdapter(statusService.getHistory(), this));
     }
 
     @Override
@@ -52,7 +57,8 @@ public class HistoryActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onListInteraction(MoonDay item) {
+    @Override
+    public void onListInteraction(Interval item) {
         //Log.v(this.getClass().getName(), "onListInteraction(MoonDay):" + item.toString() );
         //TODO Сделать активити для редактирования\удаления записи в базе
     }

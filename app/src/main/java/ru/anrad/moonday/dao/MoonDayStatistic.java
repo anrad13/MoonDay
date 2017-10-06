@@ -39,7 +39,7 @@ public class MoonDayStatistic {
         return restDurationDay;
     }
 
-    public long getHotDurationDay() {
+    public long  getHotDurationDay() {
         return hotDurationDay;
     }
 
