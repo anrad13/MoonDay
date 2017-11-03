@@ -41,11 +41,11 @@ public class EventDataSource {
     }
     */
 
-    /*
-    private void close() {
+
+    private void closeDB() {
         this.dbHelper.close();
     }
-    /*
+
 
         /**
          * Создает новое событие в таблице
@@ -53,6 +53,7 @@ public class EventDataSource {
         public void put(Event event){
             ContentValues values = eventToContentValues(event);
             getDB().insert(MySQLiteHelper.EVENT_TABLE_NAME, null, values);
+            closeDB();
         }
 
         /**
@@ -71,6 +72,7 @@ public class EventDataSource {
                 e = new Event();
             }
             cursor.close();
+            closeDB();
             return e;
         }
 
@@ -89,6 +91,7 @@ public class EventDataSource {
                 cursor.moveToNext();
             }
             cursor.close();
+            closeDB();
             return l;
         }
 
@@ -105,6 +108,7 @@ public class EventDataSource {
                 getDB().delete(MySQLiteHelper.EVENT_TABLE_NAME, MySQLiteHelper.EVENT_ID + " = " + id, null);
             }
             cursor.close();
+            closeDB();
         }
 
     private Event cursorToEvent (Cursor cursor){

@@ -11,6 +11,9 @@ import android.widget.RemoteViews;
 import ru.anrad.moonday.dao.CurrentDayDataSource;
 import ru.anrad.moonday.dao.HistoryDataSource;
 import ru.anrad.moonday.dao.MoonDayStatistic;
+import ru.anrad.moonday.dao.Status;
+import ru.anrad.moonday.dao.StatusService;
+import ru.anrad.moonday.dao.StatusType;
 
 /**
  * Implementation of App Widget functionality.
@@ -64,23 +67,47 @@ public class MainWidget extends AppWidgetProvider {
          - если день закрыт, то зеленый квадрат с (getBeginFosecastDaysLeft(current.getEnd)
          -- если статистики нет, то только квадраты
         */
-        CurrentDayDataSource currentDS = CurrentDayDataSource.getInstance(context);
-        MoonDayStatistic stat = HistoryDataSource.getInstance(context).getStatistic();
+        //CurrentDayDataSource currentDS = CurrentDayDataSource.getInstance(context);
+        //MoonDayStatistic stat = HistoryDataSource.getInstance(context).getStatistic();
 
-        if (! currentDS.isEmpty()) {
-            if (currentDS.isActive()) {
-                if (stat != null) widgetText = String.valueOf(stat.getEndForecastLeftDays(currentDS.getBegin()));
-                    else widgetText = "";
+        StatusService statusService = new StatusService(context);
+        Status currentStatus = statusService.getCurrentStatus();
+
+        widgetText = ( currentStatus.getForecast() != null ? String.valueOf(currentStatus.getForecastLeftDays()) : "?"  );
+        switch (currentStatus.getType()) {
+            case RED:
                 colorInt = context.getResources().getColor(R.color.colorDRRed);
-            } else {
-                if (stat != null) widgetText = String.valueOf(stat.getBeginForecastLeftDays(currentDS.getEnd()));
-                        else widgetText = "";
+                break;
+            case GREEN:
                 colorInt = context.getResources().getColor(R.color.colorDRGreen);
+                break;
+            default:
+                colorInt = Color.DKGRAY;
+        }
+
+        /*
+        if (currentStatus.getType() != StatusType.UNKNOWN) {
+            if (currentStatus.getType() == StatusType.RED ) {
+                colorInt = context.getResources().getColor(R.color.colorDRRed);
+                if ( currentStatus.getForecast() != null )
+                        widgetText = String.valueOf( currentStatus.getForecastLeftDays());
+                    else
+                        widgetText = "?";
+
+            } else {
+                colorInt = context.getResources().getColor(R.color.colorDRGreen);
+                if (currentStatus.getForecast() != null )
+                        widgetText = String.valueOf(currentStatus.getForecastLeftDays());
+                    else
+                        widgetText = "?";
+                widgetText = ( currentStatus.getForecast() != null ? String.valueOf(currentStatus.getForecastLeftDays()) : "?"  );
+
             }
         } else {
             widgetText = "?";
             colorInt = Color.DKGRAY;
         }
+        */
     }
 }
 
