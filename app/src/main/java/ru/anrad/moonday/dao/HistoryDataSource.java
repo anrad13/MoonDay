@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Deprecated
 public class HistoryDataSource {
     private final static int DEFAULT_STATISTIC_COUNTER = 5;
     //Singletone functionality

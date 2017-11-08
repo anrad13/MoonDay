@@ -7,6 +7,7 @@ import java.util.Locale;
 /**
  * Created by Radoselskiy on 07.09.2016.
  */
+@Deprecated
 public class MoonDay {
 
     private static final String DATE_FORMAT_STRING = "EEE d MMMM y";

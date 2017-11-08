@@ -100,7 +100,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
     }
 
     public interface OnListInteractionListener {
-        // TODO: Update argument type and name
+
         void onListInteraction(Interval item);
     }
 

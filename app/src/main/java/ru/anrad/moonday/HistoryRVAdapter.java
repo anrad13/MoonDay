@@ -106,7 +106,7 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.View
     }
 
     public interface OnListInteractionListener {
-        // TODO: Update argument type and name
+
         void onListInteraction(Interval item);
     }
 

@@ -8,7 +8,7 @@ import android.util.Log;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ru.anrad.moonday.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public static final String HISTORY_TABLE_NAME = "day_history";
     public static final String HISTORY_ID = "id";
@@ -61,18 +61,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(HISTORY_TABLE_CREATE);
-        database.execSQL(CURRENT_TABLE_CREATE);
+        //database.execSQL(HISTORY_TABLE_CREATE);
+        //database.execSQL(CURRENT_TABLE_CREATE);
         database.execSQL(EVENT_TABLE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        Log.v(MySQLiteHelper.class.getName()," Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
+        //Log.v(MySQLiteHelper.class.getName()," Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
         database.execSQL("DROP TABLE IF EXISTS " + HISTORY_TABLE_NAME);
         database.execSQL("DROP TABLE IF EXISTS " + CURRENT_TABLE_NAME);
         database.execSQL("DROP TABLE IF EXISTS " + EVENT_TABLE_NAME);
         onCreate(database);
+
     }
 
 }

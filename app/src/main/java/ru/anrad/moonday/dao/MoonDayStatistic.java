@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+@Deprecated
 public class MoonDayStatistic {
 
     private long hotDurationMSec, hotDurationDay;
