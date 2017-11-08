@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.anrad.moonday.dao.Interval;
-import ru.anrad.moonday.dao.MoonDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

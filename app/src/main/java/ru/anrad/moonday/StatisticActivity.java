@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import ru.anrad.moonday.dao.HistoryDataSource;
-import ru.anrad.moonday.dao.MoonDayStatistic;
+//import ru.anrad.moonday.dao.HistoryDataSource;
+//import ru.anrad.moonday.dao.MoonDayStatistic;
 import ru.anrad.moonday.dao.Statistic;
 import ru.anrad.moonday.dao.StatusService;
 

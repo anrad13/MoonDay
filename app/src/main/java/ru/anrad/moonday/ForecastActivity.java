@@ -10,21 +10,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
-import ru.anrad.moonday.dao.HistoryDataSource;
+//import ru.anrad.moonday.dao.HistoryDataSource;
 import ru.anrad.moonday.dao.Interval;
-import ru.anrad.moonday.dao.MoonDay;
-import ru.anrad.moonday.dao.MoonDayStatistic;
+//import ru.anrad.moonday.dao.MoonDay;
+//import ru.anrad.moonday.dao.MoonDayStatistic;
 import ru.anrad.moonday.dao.StatusService;
 
 public class ForecastActivity
         extends AppCompatActivity
         implements ForecastRVAdapter.OnListInteractionListener {
 
-    private HistoryDataSource historyDS;
-    private ArrayList<MoonDay> forecast = new ArrayList<>(12);
+    //private HistoryDataSource historyDS;
+    //private List<Interval> forecast = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,10 @@ public class ForecastActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         RecyclerView rView = (RecyclerView) findViewById(R.id.activity_forecast_recycler_view);
         rView.setLayoutManager(new LinearLayoutManager(this));
         rView.setAdapter(new ForecastRVAdapter(getForecast(), this));
-        if (forecast.size()==0)
+        if (getForecast().size()==0)
             Snackbar.make(findViewById(R.id.activity_forecast_recycler_view), "Недостаточно данных для прогноза", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
     }

@@ -27,7 +27,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String EVENT_TYPE = "type";
 
 
-    public static final String DATE_NULL_VALUE = "0";
+    //public static final String DATE_NULL_VALUE = "0";
     //public static final String STRING_NULL_VALUE = "";
 
     // Database creation sql statement

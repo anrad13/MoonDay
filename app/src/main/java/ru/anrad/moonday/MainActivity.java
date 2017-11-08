@@ -1,5 +1,7 @@
 package ru.anrad.moonday;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
@@ -10,7 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.anrad.moonday.dao.CurrentDayDataSource;
+//import ru.anrad.moonday.dao.CurrentDayDataSource;
 import ru.anrad.moonday.dao.Status;
 import ru.anrad.moonday.dao.StatusService;
 import ru.anrad.moonday.dao.StatusType;
@@ -84,8 +86,10 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(int interactionCode) {
         switch (interactionCode) {
             case OnFragmentInteractionListener.DAY_HAS_BEGAN :
+                updateWidgets();
                 break;
             case OnFragmentInteractionListener.DAY_HAS_ENDED :
+                updateWidgets();
                 break;
         }
         setMainActivityFragment();
@@ -113,6 +117,12 @@ public class MainActivity extends AppCompatActivity
         }
         this.getFragmentManager().beginTransaction().replace(R.id.activity_main_fragment, f).commit();
 
+    }
+
+    private void updateWidgets() {
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MainWidget.class));
+        MainWidget myWidget = new MainWidget();
+        myWidget.onUpdate(this, AppWidgetManager.getInstance(this),ids);
     }
 
 }

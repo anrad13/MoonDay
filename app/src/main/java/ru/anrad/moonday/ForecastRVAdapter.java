@@ -11,10 +11,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import ru.anrad.moonday.dao.Interval;
-import ru.anrad.moonday.dao.MoonDay;
+//import ru.anrad.moonday.dao.MoonDay;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link MoonDay} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Interval} and makes a call to the
  * specified {@link ForecastRVAdapter.OnListInteractionListener}.
  *
  * */
@@ -90,6 +90,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
         }
     }
 
+    /*
     public class ItemComparator implements Comparator<MoonDay> {
         @Override
         public int compare(MoonDay d1, MoonDay d2) {
@@ -98,6 +99,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
             return 0;
         }
     }
+    */
 
     public interface OnListInteractionListener {
 

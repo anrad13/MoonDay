@@ -8,9 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.anrad.moonday.dao.HistoryDataSource;
+//import ru.anrad.moonday.dao.HistoryDataSource;
 import ru.anrad.moonday.dao.Interval;
-import ru.anrad.moonday.dao.MoonDay;
+//import ru.anrad.moonday.dao.MoonDay;
 import ru.anrad.moonday.dao.StatusService;
 
 public class HistoryActivity

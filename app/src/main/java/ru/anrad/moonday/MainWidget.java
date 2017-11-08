@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.widget.RemoteViews;
 
-import ru.anrad.moonday.dao.CurrentDayDataSource;
-import ru.anrad.moonday.dao.HistoryDataSource;
-import ru.anrad.moonday.dao.MoonDayStatistic;
+//import ru.anrad.moonday.dao.CurrentDayDataSource;
+//import ru.anrad.moonday.dao.HistoryDataSource;
+//import ru.anrad.moonday.dao.MoonDayStatistic;
 import ru.anrad.moonday.dao.Status;
 import ru.anrad.moonday.dao.StatusService;
 import ru.anrad.moonday.dao.StatusType;
@@ -19,7 +19,7 @@ import ru.anrad.moonday.dao.StatusType;
  * Implementation of App Widget functionality.
  */
 public class MainWidget extends AppWidgetProvider {
-    static String widgetText = "???";
+    static String widgetText = "?";
     static int colorInt = Color.DKGRAY;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
